@@ -1,0 +1,39 @@
+name: cabal-app
+version: 1.0
+cabal-version: >= 1.6
+build-type: Simple
+license: BSD3
+license-file: LICENSE
+copyright: Copyright (c) 2009 Dan Knapp
+author: Dan Knapp
+maintainer: dankna@gmail.com
+homepage: http://www.dankna.com/software/
+bug-reports: http://www.dankna.com/issues/create/
+category: Distribution
+synopsis: Integrates with Cabal to build .app bundles on Mac OS X.
+description:
+  Graphical applications on Mac OS X are distributed in special directory
+  structures called ".app bundles".  This package integrates with the Cabal
+  build system to automate building of these bundles.  As compared to
+  cabal-macosx, cabal-app lacks the dependency-chasing features, but has
+  fewer dependent libraries, and supports .xib-to-.nib compilation.
+
+Source-Repository head
+  type: darcs
+  location: http://dankna.com/software/darcs/cabal-app/
+
+Library
+  exposed-modules: Distribution.App
+  other-modules: Distribution.Compat.Filesystem,
+                 Distribution.Compat.Filesystem.Portable,
+                 Distribution.Compat.Filesystem.Posix,
+                 Distribution.Compat.Filesystem.Windows
+  build-depends: base >= 4.3.1.0 && < 5,
+                 Cabal >= 1.11.0 && < 2,
+                 directory >= 1.1.0.0 && < 2,
+                 filepath >= 1.2.0.0 && < 2
+  if !os(windows)
+    build-depends: unix >= 2.4.1.0 && < 3
+    other-modules: Distribution.Compat.Filesystem.Posix
+  else
+    other-modules: Distribution.Compat.Filesystem.Windows
